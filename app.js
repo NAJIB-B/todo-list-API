@@ -1,20 +1,9 @@
 const express = require("express");
-const mongoose = require("mongoose");
 
 const AppError = require("./utils/appError")
 const userRouter = require("./routes/userRoute")
 const todoRouter = require("./routes/todoRoute")
 
-require("dotenv").config();
-
-const db = process.env.DATABASE.replace(
-  "<password>",
-  process.env.DATABASE_PASSWORD,
-);
-
-mongoose
-  .connect(db)
-  .then(() => console.log("Database connection successful"));
 
 const app = express();
 
@@ -30,7 +19,6 @@ app.all("*", (req, res, next) => {
 })
 
 app.use((error, req, res, next) => {
-console.log('this is the error code', error)
   if (error.code === 11000) {
 
     const field = Object.keys(error.keyValue)[0]
@@ -52,7 +40,5 @@ console.log('this is the error code', error)
   })
 })
 
-const port = process.env.PORT;
-const server = app.listen(port, () => {
-  console.log(`server running at port ${port}`);
-});
+
+module.exports = app

@@ -4,8 +4,8 @@
   "description": "An api that helps users manage their todos",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js",
+    "test": "mocha --recursive"
   },
   "author": "Muhammad Najib Bala",
   "license": "ISC",
@@ -16,6 +16,12 @@
     "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.8.1",
+    "mongodb-memory-server": "^10.0.0",
     "mongoose": "^8.6.1"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.7.3",
+    "supertest": "^7.0.0"
   }
 }
