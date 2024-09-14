@@ -18,16 +18,11 @@ const req = request(app) // Re-assign request to another variable since the host
 const route = "/api/v1/users/register"
 let mongoServer;
 
-before(async () => {
-  mongoServer = await MongoMemoryServer.create();
 
-  await mongoose.connect(mongoServer.getUri(), { dbName: "testDB" });
-});
 
-after(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
-});
+
+
+
 
 
 describe("User registration endpoint", function () {
@@ -35,7 +30,7 @@ describe("User registration endpoint", function () {
     req
       .post(route)
       .send({
-        email: "test@gmail.com",
+        email: "testUser@gmail.com",
         name: "test user",
         password: "test1234",
         confirmPassword: "test1234",
@@ -49,13 +44,95 @@ describe("User registration endpoint", function () {
       });
   });
 
-  it("Should return 400 if the registration details are not incorrect or incomplete", function (done) {
+  it("Should return 400 if the email is incorrect", function (done) {
+    req
+      .post(route)
+      .send({
+        email: "megmail.com",
+        name: "test user",
+        password: "test1234",
+        confirmPassword: "test1234",
+      })
+      .expect(400)
+      .end(function (err, res) {
+        if (err) return done(err);
+
+        done();
+      });
+  });
+
+  it("Should return 400 if the email is missing", function (done) {
     req
       .post(route)
       .send({
         name: "test user",
         password: "test1234",
         confirmPassword: "test1234",
+      })
+      .expect(400)
+      .end(function (err, res) {
+        if (err) return done(err);
+
+        done();
+      });
+  });
+
+  it("Should return 400 if the name is missing", function (done) {
+    req
+      .post(route)
+      .send({
+        email: "najib@gmail.com",
+        password: "test1234",
+        confirmPassword: "test1234",
+      })
+      .expect(400)
+      .end(function (err, res) {
+        if (err) return done(err);
+
+        done();
+      });
+  });
+
+  it("Should return 400 if the password is missing", function (done) {
+    req
+      .post(route)
+      .send({
+        email: "najib@gmail.com",
+        name: "test user",
+        confirmPassword: "test1234",
+      })
+      .expect(400)
+      .end(function (err, res) {
+        if (err) return done(err);
+
+        done();
+      });
+  });
+
+  it("Should return 400 if the confirmPassword is missing", function (done) {
+    req
+      .post(route)
+      .send({
+        email: "najib@gmail.com",
+        name: "test user",
+        password: "test1234",
+      })
+      .expect(400)
+      .end(function (err, res) {
+        if (err) return done(err);
+
+        done();
+      });
+  });
+
+  it("Should return 400 if the password and confirmPassword are not the same", function (done) {
+    req
+      .post(route)
+      .send({
+        email: "najib@gmail.com",
+        name: "test user",
+        password: "test1234",
+        confirmPassword: "test12345",
       })
       .expect(400)
       .end(function (err, res) {

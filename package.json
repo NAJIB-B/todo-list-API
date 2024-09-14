@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha --recursive"
+    "test": "mocha --recursive --file ./test/setup.js"
   },
   "author": "Muhammad Najib Bala",
   "license": "ISC",
