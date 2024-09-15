@@ -3,6 +3,7 @@ const express = require("express");
 const AppError = require("./utils/appError")
 const userRouter = require("./routes/userRoute")
 const todoRouter = require("./routes/todoRoute")
+const errorController = require("./controllers/errorController")
 
 
 const app = express();
@@ -18,27 +19,7 @@ app.all("*", (req, res, next) => {
 
 })
 
-app.use((error, req, res, next) => {
-  if (error.code === 11000) {
-
-    const field = Object.keys(error.keyValue)[0]
-    error.message = `${field} already in use, Please use a different ${field}`
-    return res.status(400).json({
-
-    message: error.message,
-      status: 'fail',
-      stack: error.stack
-      
-
-    })
-  }
-  res.status(error.statusCode).json({
-    message: error.message,
-    status: error.status,
-    code: error.statusCode,
-    stack: error.stack
-  })
-})
+app.use(errorController)
 
 
 module.exports = app
