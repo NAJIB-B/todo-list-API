@@ -8,22 +8,12 @@ let expect;
 })();
 
 const request = require("supertest");
-const { MongoMemoryServer } = require("mongodb-memory-server");
-const mongoose = require("mongoose");
 
 const User = require("../models/userModel");
 const app = require("../app");
 
-const req = request(app) // Re-assign request to another variable since the host is the same
-const route = "/api/v1/users/register"
-let mongoServer;
-
-
-
-
-
-
-
+const req = request(app); // Re-assign request to another variable since the host is the same
+const route = "/api/v1/users/register";
 
 describe("User registration endpoint", function () {
   it("Should return a jwt token for successful user registration", function (done) {
@@ -61,69 +51,34 @@ describe("User registration endpoint", function () {
       });
   });
 
-  it("Should return 400 if the email is missing", function (done) {
-    req
-      .post(route)
-      .send({
-        name: "test user",
-        password: "test1234",
-        confirmPassword: "test1234",
-      })
-      .expect(400)
-      .end(function (err, res) {
-        if (err) return done(err);
+  // Looping over required fields and testing if any required field is missing from the request body
+  const requiredFields = ["email", "name", "password", "confirmPassword"];
 
-        done();
-      });
-  });
+  const requestBody = {
+    email: "test@gmail.com",
+    name: "test name",
+    password: "test1234",
+    confirmPassword: "test1234",
+  };
 
-  it("Should return 400 if the name is missing", function (done) {
-    req
-      .post(route)
-      .send({
-        email: "najib@gmail.com",
-        password: "test1234",
-        confirmPassword: "test1234",
-      })
-      .expect(400)
-      .end(function (err, res) {
-        if (err) return done(err);
+  for (const field of requiredFields) {
+    const incorrectRequestBody = { ...requestBody };
+    delete incorrectRequestBody[field];
 
-        done();
-      });
-  });
+    it(`Should return 400 if ${field} is missing`, function (done) {
+      req
+        .post(route)
+        .send(incorrectRequestBody)
+        .expect(400)
+        .end(function (err, res) {
+          if (err) return done(err);
+          expect(res.status).to.equal(400);
+          expect(res.body.status).to.equal("fail");
 
-  it("Should return 400 if the password is missing", function (done) {
-    req
-      .post(route)
-      .send({
-        email: "najib@gmail.com",
-        name: "test user",
-        confirmPassword: "test1234",
-      })
-      .expect(400)
-      .end(function (err, res) {
-        if (err) return done(err);
-
-        done();
-      });
-  });
-
-  it("Should return 400 if the confirmPassword is missing", function (done) {
-    req
-      .post(route)
-      .send({
-        email: "najib@gmail.com",
-        name: "test user",
-        password: "test1234",
-      })
-      .expect(400)
-      .end(function (err, res) {
-        if (err) return done(err);
-
-        done();
-      });
-  });
+          done();
+        });
+    });
+  }
 
   it("Should return 400 if the password and confirmPassword are not the same", function (done) {
     req

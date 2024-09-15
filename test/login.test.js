@@ -7,25 +7,29 @@ let expect;
 
 const request = require("supertest");
 
-const { MongoMemoryServer } = require("mongodb-memory-server");
-const mongoose = require("mongoose");
 
 const app = require("../app");
 const User = require("../models/userModel");
 
-let mongoServer;
-beforeEach(async () => {
 
-  const user = await User.create({
-    name: "meee tooo",
-    email: "test@gmail.com",
-    password: "test1234",
-    confirmPassword: "test1234",
-  });
-});
+
 
 
 describe("User Login endpoint", function () {
+  before(async () => {
+
+    const user = await User.create({
+      name: "meee tooo",
+      email: "test@gmail.com",
+      password: "test1234",
+      confirmPassword: "test1234",
+    });
+  });
+
+  after(async () => {
+    await User.findOneAndDelete({email: 'test@gmail.com'})
+  })
+
   it("Should return jwt for successful login", function (done) {
     request(app)
     .post("/api/v1/users/login")
@@ -103,6 +107,9 @@ describe("User Login endpoint", function () {
     .expect(400)
     .end(function(err, res) {
       if (err) return done(err)
+
+      expect(res.status).to.equal(400)
+      expect(res.body.message).to.equal('Email or Password is incorrect')
 
       done()
       

@@ -13,7 +13,7 @@ exports.createTodo = catchAsync( async(req, res, next) => {
     next(new AppError(errors, 400))
   }
 
-  req.body.owner = req.user.id
+  req.body.owner = req.body.owner || req.user.id
 
   const todo = await Todo.create(req.body);
 

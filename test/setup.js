@@ -6,13 +6,13 @@ const mongoose = require("mongoose");
 let mongoServer;
 
 
-beforeEach(async () => {
+before(async () => {
   mongoServer = await MongoMemoryServer.create();
 
   await mongoose.connect(mongoServer.getUri(), { dbName: "testDB" });
 });
 
-afterEach(async () => {
+after(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
 });
