@@ -1,7 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 
-const { createUser, loginUser } = require("../controllers/userController");
+const { createUser, loginUser, createAccessToken } = require("../controllers/userController");
 const { protect} = require("../controllers/authController")
 
 const router = express.Router();
@@ -43,6 +43,6 @@ router.post(
   loginUser,
 );
 
-
+router.post("/refresh", createAccessToken)
 
 module.exports = router;

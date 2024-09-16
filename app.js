@@ -1,6 +1,7 @@
 const express = require("express");
 const rateLimit = require("express-rate-limit")
 const slowDown =require("express-slow-down")
+const cookieParser = require("cookie-parser")
 
 const AppError = require("./utils/appError")
 const userRouter = require("./routes/userRoute")
@@ -28,6 +29,7 @@ const speedLimiter = slowDown({
 app.use(limiter)
 app.use(speedLimiter)
 app.use(express.json())
+app.use(cookieParser())
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/todos", todoRouter)

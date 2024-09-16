@@ -33,6 +33,14 @@ module.exports = (error, req, res, next) => {
     if (error.name === 'JsonWebTokenError') error = handleJWTError(error);
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError(error);
 
+  if (error instanceof RangeError) {
+    return res.json({
+      message: 'this error type has not been handled',
+      error
+    })
+  }
+  console.log(`thsi is the error`, error)
+
   res.status(error.statusCode).json({
     message: error.message,
     status: error.status,
