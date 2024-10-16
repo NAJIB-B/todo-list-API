@@ -28,7 +28,7 @@
   <pre><code>npm install</code></pre>
 
   <li><strong>Create your own MongoDB database</strong></li>
-  <p>(I used MongoDB Atlas)</p>
+  <p>(I used <a href="https://www.mongodb.com/products/platform/atlas-database">MongoDB Atlas</a>)</p>
 
   <li><strong>Create your <code>.env</code> file</strong></li>
   <pre><code>touch .env</code></pre>
