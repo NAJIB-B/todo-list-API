@@ -19,10 +19,10 @@
 
 <ol>
   <li><strong>Clone the project repo</strong></li>
-  <pre><code>git clone https://github.com/NAJIB-B/Personal-blogging-API.git</code></pre>
+  <pre><code>git clone https://github.com/NAJIB-B/todo-list-API.git</code></pre>
 
   <li><strong>Navigate into the project directory</strong></li>
-  <pre><code>cd Personal-blogging-API</code></pre>
+  <pre><code>cd todo-list-API</code></pre>
 
   <li><strong>Install the dependencies</strong></li>
   <pre><code>npm install</code></pre>
